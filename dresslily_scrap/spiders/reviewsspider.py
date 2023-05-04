@@ -26,33 +26,40 @@ class ReviewsSpider(scrapy.Spider):
 
     def parse(self, response):
         hoodies = response.css(HOODIE)
+        next_page = response.xpath(NEXT_PAGE).get()
         for hoodie in hoodies:
             hoodie_link = hoodie.css(HOODIES_LINK)
-            yield response.follow(hoodie_link.get(), callback=self.parse)
-        next_global_page = response.xpath(NEXT_PAGE).get()
 
+            yield response.follow(hoodie_link.get(), callback=self.parse_reviews)
+
+        if next_page is not None:
+            next_global_page_url = self.base_url + next_page
+            yield response.follow(next_global_page_url, callback=self.parse)
+
+    def parse_reviews(self, response):
         total_reviews = response.css(TOTAL_REVIEWS).get()
         if total_reviews is not None:
             pages_amount = math.ceil(int(total_reviews) / 4)  # if 1/4 would be 1
             product_id = PRODUCT_ID_REG.search(response.url).group(1)
             for page in range(1, pages_amount + 1):
                 url = f"https://www.dresslily.com/m-review-a-view_review_list-goods_id-{product_id}-page-{page}?odr=0"
-                yield response.follow(url, callback=self.parse_item, headers=self.review_headers)
+                yield response.follow(
+                    url, callback=self.parse_item, headers=self.review_headers, cb_kwargs={"product_id": product_id}
+                )
 
-        if next_global_page is not None:
-            next_global_page_url = self.base_url + next_global_page
-            yield response.follow(next_global_page_url, callback=self.parse)
-
-    def parse_item(self, response):
+    def parse_item(self, response, product_id):
         body = json.loads(response.body)
         for review in body["data"]["review"]["review_list"]:
+            if isinstance(review["goods"], dict):
+                size, color = review["goods"]["size"], review["goods"]["color"]
+            else:
+                size, color = "", ""
             review_item = ReviewItem(
-                product_id=review["goods_id"],
+                product_id=product_id,
                 rating=review["rate_overall"],
                 timestamp=review["adddate"],
                 text=review["pros"],
-                size=review.get("goods", {}).get("size"),
-                color=review.get("goods", {}).get("color"),
+                size=size,
+                color=color,
             )
             yield review_item
-
