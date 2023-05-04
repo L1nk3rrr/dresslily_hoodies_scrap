@@ -1,6 +1,6 @@
 import scrapy
 
-from dresslily_scrap.locators import (
+from dresslily_scrap.utils.locators import (
     NEXT_PAGE, HOODIE, HOODIES_LINK, PRODUCT_NAME, DISCOUNT, DISCOUNT_PRICE, PRODUCT_PRICE, TOTAL_REVIEWS
 )
 from dresslily_scrap.items import ProductItem

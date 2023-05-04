@@ -3,7 +3,7 @@ import json
 
 import scrapy
 
-from dresslily_scrap.locators import NEXT_PAGE, HOODIE, HOODIES_LINK, TOTAL_REVIEWS
+from dresslily_scrap.utils.locators import NEXT_PAGE, HOODIE, HOODIES_LINK, TOTAL_REVIEWS
 from dresslily_scrap.items import ReviewItem
 from dresslily_scrap.utils.regex_patterns import PRODUCT_ID_REG
 
