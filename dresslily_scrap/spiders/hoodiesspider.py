@@ -50,4 +50,4 @@ class HoodiesSpider(scrapy.Spider):
             total_reviews=response.css(TOTAL_REVIEWS).get(),
             product_info=response.css(".xxkkk20").get(),
         )
-        return product_item
+        yield product_item
