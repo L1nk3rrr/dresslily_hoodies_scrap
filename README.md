@@ -7,9 +7,10 @@ to scrape information for men's hoodies from the [DressLily](https://www.dressli
 - Scrapy framework
 
 ## Installation
-1. Clone the repository: git clone https://github.com/your_username/scrapy-test-task.git
-2. Change the directory: cd scrapy-test-task
-3. Install the required packages: `pip install -r requirements.txt`
+1. Clone the repository: `git clone https://github.com/L1nk3rrr/dresslily_hoodies_scrap.git`
+2. Create environment `python3 -m venv venv`
+3. Activate environment `source venv/bin/activate`
+4. Install the required packages: `pip3 install -r <your_path>/requirements.txt`
 
 ## Usage
 To run the spiders and save the scraped data to CSV files, run the following command:
