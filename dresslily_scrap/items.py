@@ -2,6 +2,7 @@
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
+import time
 
 import scrapy
 
@@ -20,7 +21,7 @@ class ProductItem(scrapy.Item):
 class ReviewItem(scrapy.Item):
     product_id = scrapy.Field()
     rating = scrapy.Field()
-    timestamp = scrapy.Field()
+    timestamp = scrapy.Field(serializer=lambda value: int(time.mktime(time.strptime(value, "%b,%d %Y %H:%M:%S"))))
     text = scrapy.Field()
     size = scrapy.Field()
     color = scrapy.Field()
