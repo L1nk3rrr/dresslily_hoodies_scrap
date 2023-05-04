@@ -15,3 +15,12 @@ class ProductItem(scrapy.Item):
     original_price = scrapy.Field()
     total_reviews = scrapy.Field()
     product_info = scrapy.Field()
+
+
+class ReviewItem(scrapy.Item):
+    product_id = scrapy.Field()
+    rating = scrapy.Field()
+    timestamp = scrapy.Field()
+    text = scrapy.Field()
+    size = scrapy.Field()
+    color = scrapy.Field()
